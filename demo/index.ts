@@ -15,7 +15,7 @@ useHttp({
 })
 
 usePlausible({
-  collectUrl: process.env.PLAUSIBLE_COLLECT_URL,
+  apiEventUrl: process.env.PLAUSIBLE_API_EVENT_URL,
   websiteId: process.env.PLAUSIBLE_WEBSITE_ID,
 })
 

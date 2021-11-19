@@ -1,10 +1,10 @@
 import { getClientIp } from "request-ip"
-import { fetchOptionsJson, fetchText, Logger } from "zeed"
+import { fetchJson, fetchOptionsJson, fetchText, Logger } from "zeed"
 import { fetch } from "cross-fetch"
 
 const log = Logger("track")
 
-let plausibleCollectUrl: string
+let plausibleApiEventUrl: string
 let plausibleWebsiteId: string
 
 export function setTrackWebsiteId(id: string) {
@@ -13,8 +13,8 @@ export function setTrackWebsiteId(id: string) {
 }
 
 export function setTrackCollectUrl(url: string) {
-  plausibleCollectUrl = url
-  log.info("Plausible collect URL:", plausibleCollectUrl)
+  plausibleApiEventUrl = url
+  log.info("Plausible collect URL:", plausibleApiEventUrl)
 }
 
 type TrackEvent = {
@@ -48,37 +48,38 @@ export async function track(opt: TrackEvent | TrackPageview) {
       const hostname = req.hostname
 
       let body = {
-        type,
-        payload: {
-          url,
-          hostname,
-          language,
-          referrer,
-          website,
-        },
+        domain: website,
+        name: "pageview", // type,
+        url: `https://${website}${url}`,
+        // referrer,
+        // props: {},
+        hostname,
+        // language,
       }
 
-      // log.info("track", { body, ua, referrer, ip })
+      log.info("track", { body, ua, referrer, ip, plausibleApiEventUrl })
 
-      if (type === "event") {
-        let { event_type, event_value } = opt as TrackEvent
-        Object.assign(body.payload, { event_type, event_value })
-      }
+      // if (type === "event") {
+      //   let { event_value } = opt as TrackEvent
+      //   body.props = { event_value }
+      // }
 
       let options = {
-        ...fetchOptionsJson(body),
+        ...fetchOptionsJson(body, "POST"),
       }
 
       Object.assign(options.headers, {
-        "Accept-Language": language,
+        // "Accept-Language": language,
         "User-Agent": ua,
         Referer: referrer,
-        "cf-connecting-ip": ip,
+        "X-Forwarded-For": ip,
       })
 
-      // log.info(`track ${type} to ${plausibleTrackUrl}:`, options)
+      // delete options.headers["Accept"]
 
-      let response = await fetchText(plausibleCollectUrl, options, fetch)
+      log.info(`track ${type} to ${plausibleApiEventUrl}:`, options)
+
+      let response = await fetchText(plausibleApiEventUrl, options, fetch)
       // log.info("tracked", response)
     } catch (err) {
       log.warn("Failed to track", err)
