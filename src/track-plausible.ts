@@ -71,7 +71,10 @@ export async function track(opt: TrackEvent) {
       log.info(`track ${name} to ${plausibleApiEventUrl}:`, options)
 
       let response = await fetchText(plausibleApiEventUrl, options, fetch)
-      // log.info("tracked", response)
+
+      if (response !== "ok") {
+        log.info("unexpected plausible feedback:", response)
+      }
     } catch (err) {
       log.warn("Failed to track", err)
     }
