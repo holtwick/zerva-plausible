@@ -28,7 +28,7 @@ on("httpInit", ({ get }) => {
   const event = suid()
 
   get("/trackEvent", ({ req }) => {
-    emit("trackEvent", req, "sample", event)
+    emit("trackEvent", req, "sample", { event: "event", os: event })
     return event
   })
 
