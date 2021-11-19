@@ -13,7 +13,7 @@ const name = "uammi"
 const log = Logger(`zerva:${name}`)
 
 interface Config {
-  collectUrl: string
+  apiEventUrl: string
   websiteId: string
 }
 
@@ -21,7 +21,7 @@ export function usePlausible(config: Config) {
   log.info(`use ${name}`)
   register(name)
 
-  setTrackCollectUrl(config.collectUrl)
+  setTrackCollectUrl(config.apiEventUrl)
   setTrackWebsiteId(config.websiteId)
 
   on("trackEvent", trackEvent)

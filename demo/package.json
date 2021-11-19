@@ -12,8 +12,8 @@
     "start": "ZEED=* zerva index.ts"
   },
   "dependencies": {
-    "zeed": "^0.7.46",
-    "zerva": "^0.4.35",
+    "zeed": "^0.7.76",
+    "zerva": "^0.4.60",
     "zerva-plausible": "file:.."
   },
   "author": "Dirk Holtwick",

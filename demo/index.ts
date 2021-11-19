@@ -15,7 +15,7 @@ useHttp({
 })
 
 usePlausible({
-  collectUrl: process.env.PLAUSIBLE_COLLECT_URL,
+  apiEventUrl: process.env.PLAUSIBLE_API_EVENT_URL,
   websiteId: process.env.PLAUSIBLE_WEBSITE_ID,
 })
 
@@ -28,7 +28,7 @@ on("httpInit", ({ get }) => {
   const event = suid()
 
   get("/trackEvent", ({ req }) => {
-    emit("trackEvent", req, "sample", event)
+    emit("trackEvent", req, "sample", { event: "event", os: event })
     return event
   })
 
