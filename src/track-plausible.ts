@@ -68,7 +68,7 @@ export async function track(opt: TrackEvent) {
         "X-Forwarded-For": ip,
       })
 
-      log.info(`track ${name} to ${plausibleApiEventUrl}:`, options)
+      // log.info(`track ${name} to ${plausibleApiEventUrl}:`, options)
 
       let response = await fetchText(plausibleApiEventUrl, options, fetch)
 
