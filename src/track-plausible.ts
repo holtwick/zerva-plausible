@@ -65,7 +65,9 @@ export async function track(opt: TrackEvent) {
         "Accept-Language": language,
         "User-Agent": ua,
         Referer: referrer,
+        "cf-connecting-ip": ip,
         "X-Forwarded-For": ip,
+        forwarded: `for=${ip}`,
       })
 
       // log.info(`track ${name} to ${plausibleApiEventUrl}:`, options)
